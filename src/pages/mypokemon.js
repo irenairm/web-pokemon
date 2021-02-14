@@ -14,12 +14,12 @@ function noAvailablePokemon(props){
         </Container>
 }
 function MyPokemonList(props){
-    var data = localStorage.getItem("pokemon")
+    var data = JSON.parse(localStorage.getItem(pokemonName))
     console.log(data)
     if (data.length<1) return noAvailablePokemon
     else {
-      return <div>{data.split('/')[0]} {data.split('/')[1]}
-          {/* <Row>
+      return <div>
+          <Row>
           {data.myPokemonItems.length === 0? noAvailablePokemon(props):
           data.myPokemonItems.map((pokemon)=>{
               return <Col xs={6} sm={3}>
@@ -29,7 +29,7 @@ function MyPokemonList(props){
                 owned={1} />
               </Col>
             })}
-          </Row> */}
+          </Row>
       </div>
     }
 };
