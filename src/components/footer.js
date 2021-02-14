@@ -22,6 +22,7 @@ function Footer(props){
             <ModalProp 
             probability = {x}
             name= {props.name}
+            image = {props.image}
             show={show} 
             onHide = {()=>handleClose()}/>
             </>

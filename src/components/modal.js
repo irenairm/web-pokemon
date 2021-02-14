@@ -4,8 +4,46 @@ import React, {useState} from 'react'
 import { Modal,Button, Form, Container } from "react-bootstrap";
 import {withRouter} from 'react-router-dom'
 
+function saveData(pokemonName,myPokemonName,image){
+  var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
+  var data = []
+  // add to local storage for the first time
+  if (!pokemonList){
+    var myPokemon= [];
+    myPokemon.push(myPokemonName);
+    var pokemon = {
+      "pokemon":pokemonName,
+      "image":image,
+      "owned":myPokemon
+    }
+    data.push(JSON.stringify(pokemon))
+    localStorage.setItem('myPokemonItems',data)
+  }
+  else{
+    // cek udah pernah ditambahin atau belum
+    //pernah ditambahin
+      // cek owned : pernah owned
+
+      // cek owned : blm pernah owned
+      
+    //belum pernah ditambahin
+    data.push(JSON.parse(localStorage.getItem('myPokemonItems')))
+    console.log(data)
+    var myPokemon= [];
+    myPokemon.push(myPokemonName);
+    var pokemon = {
+      "pokemon":pokemonName,
+      "image":image,
+      "owned":myPokemon
+    }
+    data.push(pokemon)
+    localStorage.setItem('myPokemonItems',JSON.stringify(data))
+  }
+  console.log(JSON.parse(localStorage.getItem('myPokemonItems')))
+}
 const CatchPokemon = (props) => {
     const [myPokemonName,setMyPokemonName] = useState("")
+    const [showErrorMessage,setErrorMessage] = useState(false)
     var getPokemon = props.probability>=50?true:false;
 
     return(
@@ -34,16 +72,18 @@ const CatchPokemon = (props) => {
             </Container>):
             (<p>The pokemon ran away... try again some other time</p>)
         }
+        {showErrorMessage?<p>Name already existed!</p>:null}
       </Modal.Body>
       <Modal.Footer>
         {getPokemon?
         (<Button onClick= {()=>{
-          while (localStorage.getItem("pokemon",`${props.name}/${myPokemonName}`)){
-            <p>Already named this pokemon with this name!</p>
+          if (!saveData(props.name,myPokemonName,props.image)){
+            setErrorMessage(true)
           }
-          (localStorage.setItem("pokemon",`${props.name}/${myPokemonName}`)
-          props.history.push(`/mylist`))
-        }}>Save Name</Button>): (<Button onClick={props.onHide}>Okay</Button>)}
+          else{
+            props.history.push(`/mylist`)
+          }
+          }}>Save Name</Button>): (<Button onClick={props.onHide}>Okay</Button>)}
       </Modal.Footer>
     </Modal>
     );

@@ -61,7 +61,7 @@ const Pokemon = (props) => {
           </Row>
         </Col>
       </Row>
-      <Footer name={data.pokemon.name}></Footer>
+      <Footer name={data.pokemon.name} image={data.pokemon.sprites.front_default} ></Footer>
       </Fragment>
     );
 }
