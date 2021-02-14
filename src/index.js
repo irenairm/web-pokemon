@@ -1,15 +1,20 @@
 // from https://www.apollographql.com/docs/tutorial/queries/
-import { ApolloClient, ApolloProvider } from "@apollo/client";
+import { ApolloClient, NormalizedCacheobject, ApolloProvider, gql } from "@apollo/client";
 import { cache } from "./cache";
 import React from "react";
 import ReactDOM from "react-dom";
 import Pages from "./pages";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+export const typeDefs = gql `
+extend type Query{
+  myPokemonItems: [ID!]!
+}`
 // Initialize ApolloClient
 const client = new ApolloClient({
   cache,
-  uri: "https://graphql-pokeapi.vercel.app/api/graphql"
+  uri: "https://graphql-pokeapi.vercel.app/api/graphql",
+  typeDefs
 });
 
 

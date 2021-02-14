@@ -16,7 +16,7 @@ const card = css
     margin-top:32px;
   margin-bottom: 16px;
   background-color: #0000;
-  width:190px;
+  width:90%;
   font-size: 20px;
   border-radius: 10px;
   color: black;
@@ -29,7 +29,7 @@ const card = css
 `
 const owned = css`
 font-family: PT Sans;
-background-color: yellow;
+background-color: #ffdb58;
 border-radius: 10px;
 font-size: 15px;
 text-align: center;

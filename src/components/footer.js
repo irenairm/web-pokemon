@@ -1,29 +1,56 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
+import {useState} from 'react'
 import {withRouter} from 'react-router-dom'
 import ball from '../assets/ball.png'
-function catchPokemon(){
-    alert('tes')
-}
-function Footer(){
-    return <div css={footer}>
-        <img css={brand} src={ball}></img><p>Catch</p>
-        </div>
+import ModalProp from './modal'
+
+
+function Footer(props){
+    const [show, setShow] = useState(false);
+    const handleClose = () => {
+        setShow(false)
+    };
+    const handleShow = () => setShow(true);
+    var x = Math.ceil(Math.random()*100);
+
+    return (<>
+            <div css={footer} onClick={()=> handleShow()}>
+                <img css={brand} src={ball}></img><p>Catch</p>
+            </div>
+
+            <ModalProp 
+            probability = {x}
+            name= {props.name}
+            show={show} 
+            onHide = {()=>handleClose()}/>
+            </>
+            )
 }
 
 const footer = css`
 display:block;
 position: fixed;
-left: 0;
-bottom: 0;;
-width:50%;
+left: 40%;
+right: 40%;
+bottom: 0;
+width:220px;
 text-align:center;
-margin: 0 auto;
-padding-top:1rem;
-background-color: white;
+padding-top:.75rem;
+margin-bottom: 0;
+border-radius: 10px;
+background-color: #ffdb58;
 font-weight: 700;
-align-items:center;`
+font-size: 20px;
+text-transform: uppercase;
+font-family: Monaco;
+align-items:center;
+&:hover{
+    cursor:pointer;
+    transform: scale(1.05);
+}`
 
 const brand = css `
 width: 100px;`
+
 export default withRouter(Footer);

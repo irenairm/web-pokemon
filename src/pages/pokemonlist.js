@@ -29,13 +29,13 @@ function PokemonList() {
     const [isLoadingMore, setIsLoadingMore] = useState(false)
     if (loading) return <Loading />;
     if (error) return <p>Error: {error.message}</p>;
-
+    
     return (<Fragment>
       <Container>
       <Row>
           {
           data.pokemons.results.map((pokemon)=>{
-              return <Col sm={3}>
+              return <Col xs={6} sm={3}>
                 <PokemonCard
                 img={pokemon.image} 
                 pokemon={pokemon.name} 
@@ -72,8 +72,8 @@ padding: 10px;
   width:fit-content;
   font-size: 20px;
   border-radius: 10px;
-  border: 1px solid yellow;
-  background-color: yellow;
+  border: 1px solid #ffdb58;
+  background-color: #ffdb58;
   color: black;
   font-weight: bold;
   box-shadow: 0 10px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.14);

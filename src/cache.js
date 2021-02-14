@@ -8,12 +8,16 @@ export const cache = new InMemoryCache({
                     keyArgs: false,
                     merge(existing,incoming){
                         let pokemons = [];
-                        if (existing && existing.pokemons){
-                            pokemons = pokemons.concat(existing.pokemons)
+                        if (existing && existing.results){
+                            pokemons = pokemons.concat(existing.results)
+                            console.log(existing)
+                        
                         }
-                        if (incoming && incoming.pokemons){
-                            pokemons = pokemons.concat(incoming.pokemons)
+                        if (incoming && incoming.results){
+                            pokemons = pokemons.concat(incoming.results)
+                            console.log(incoming.results)
                         }
+                        console.log(pokemons)
                         return{
                             ...incoming,
                             pokemons

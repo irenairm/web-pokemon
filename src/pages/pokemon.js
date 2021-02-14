@@ -61,7 +61,7 @@ const Pokemon = (props) => {
           </Row>
         </Col>
       </Row>
-      <Footer></Footer>
+      <Footer name={data.pokemon.name}></Footer>
       </Fragment>
     );
 }
@@ -91,9 +91,8 @@ const pokemonName = css
 `position:absolute;
 z-index:10;
 top: -2rem;
-left:30%;
-right:50%;
-background-color: rgb(1,1,1);
+left:25%;
+background-color: #3B4CCA;
 border-radius: 10px;
 padding: 15px;
 border: 1px solid #0000;
@@ -104,7 +103,7 @@ font-weight:650;
 color: #ffff;
 `
 const cardName = css `
-background-color: #0001;
+background-color: #ffdb58;
 width: 200px;
 padding: 10px;
 border-radius: 15px;
