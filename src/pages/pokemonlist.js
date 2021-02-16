@@ -29,6 +29,10 @@ function PokemonList() {
     const [isLoadingMore, setIsLoadingMore] = useState(false)
     if (loading) return <Loading />;
     if (error) return <p>Error: {error.message}</p>;
+
+    var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
+    var ownedPokemon= []
+    ownedPokemon.push(pokemonList)
     
     return (<Fragment>
       <Container>
@@ -39,7 +43,10 @@ function PokemonList() {
                 <PokemonCard
                 img={pokemon.image} 
                 pokemon={pokemon.name} 
-                owned={1} />
+                owned={
+                  ownedPokemon[0]!==null?
+                  (ownedPokemon.map((dt)=>dt.pokemon.localeCompare(pokemon.name)===0?dt.owned.length:0)):0
+                } />
               </Col>
             })
           }

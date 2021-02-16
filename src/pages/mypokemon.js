@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
-import React from 'react';
+import React, {Fragment} from 'react';
 import {withRouter} from 'react-router-dom'
 import {gql,useQuery} from '@apollo/client';
 import {Loading, PokemonCard} from '../components';
@@ -14,23 +14,29 @@ function noAvailablePokemon(props){
         </Container>
 }
 function MyPokemonList(props){
-    var data = JSON.parse(localStorage.getItem(pokemonName))
+    var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
+    var data = []
+    data.push(pokemonList)
+
     console.log(data)
-    if (data.length<1) return noAvailablePokemon
+    if (data[0]===null) return noAvailablePokemon(props)
     else {
-      return <div>
-          <Row>
-          {data.myPokemonItems.length === 0? noAvailablePokemon(props):
-          data.myPokemonItems.map((pokemon)=>{
+      
+      return <Fragment>
+      <Container><Row>
+          { data.map((pokemon)=>{
               return <Col xs={6} sm={3}>
                 <PokemonCard
+                disabled = {true}
                 img={pokemon.image} 
-                pokemon={pokemon.name} 
-                owned={1} />
+                pokemon={pokemon.pokemon} 
+                owned={pokemon.owned.length}
+                names = {pokemon.owned} />
               </Col>
             })}
           </Row>
-      </div>
+          </Container>
+          </Fragment>
     }
 };
 
