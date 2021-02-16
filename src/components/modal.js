@@ -21,25 +21,37 @@ function saveData(pokemonName,myPokemonName,image){
   }
   else{
     // cek udah pernah ditambahin atau belum
+    data.push(pokemonList)
+    var added = data.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:false)
+    console.log(added)
     //pernah ditambahin
-      // cek owned : pernah owned
-
-      // cek owned : blm pernah owned
-      
-    //belum pernah ditambahin
-    data.push(JSON.parse(localStorage.getItem('myPokemonItems')))
-    console.log(data)
-    var myPokemon= [];
-    myPokemon.push(myPokemonName);
-    var pokemon = {
-      "pokemon":pokemonName,
-      "image":image,
-      "owned":myPokemon
+    if (added){
+      var owned = added.map((pokemon)=>pokemon.owned)[0]
+      if (owned.includes(myPokemonName)){
+        // cek owned : pernah owned
+        return false
+      }
+      else {
+        // cek owned : blm pernah owned
+        owned.push(myPokemonName)
+        localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
+        console.log(pokemonList)
+        return true
+      }
     }
-    data.push(pokemon)
-    localStorage.setItem('myPokemonItems',JSON.stringify(data))
+    else{
+      //belum pernah ditambahin
+      var myPokemon= [];
+      myPokemon.push(myPokemonName);
+      var pokemon = {
+        "pokemon":pokemonName,
+        "image":image,
+        "owned":myPokemon
+      }
+      data.push(JSON.stringify(pokemon))
+      localStorage.setItem('myPokemonItems',data)
+    }
   }
-  console.log(JSON.parse(localStorage.getItem('myPokemonItems')))
 }
 const CatchPokemon = (props) => {
     const [myPokemonName,setMyPokemonName] = useState("")
