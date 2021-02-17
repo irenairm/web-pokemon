@@ -3,31 +3,35 @@ import { css, jsx } from '@emotion/react'
 import {withRouter} from 'react-router-dom'
 import {Button} from 'react-bootstrap'
 
-function pokemonNames(pokemons,names){
-  const handleRelease = () => {
-    var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
-    var data = []
-    // data.push(pokemonList)
+const handleRelease = (pokemons,names) => {
+  var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
 
-    if (pokemonList){
-      // cek udah pernah ditambahin atau belum
-      data.push(pokemonList)
-      var added = data.map((pokemon) => pokemon.pokemon.localeCompare(pokemons)===0?pokemon:false)
-      console.log(added)
-      //pernah ditambahin
-      if (added){
-        var owned = added.map((pokemon)=>pokemon.owned)[0]
-        if (owned.includes(names)){
-          owned = owned.filter((name)=>name!=names)
-          console.log(owned)
-          localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
-          console.log(pokemonList)
+  if (pokemonList){
+    var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemons)===0?pokemon:false) .filter((data)=>data!=false)
+    console.log(added)
+    //pernah ditambahin
+    if (added){
+      var owned = added.map((pokemon)=>pokemon.owned)[0]
+      if (owned.includes(names)){
+        var index = owned.indexOf(names);
+        owned.splice(index,1);
+
+        if (owned.length===0){
+          var pokemonIndex = pokemonList.indexOf(added[0])
+          pokemonList.splice(pokemonIndex,1);
         }
+        console.log(pokemonList)
+        localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
+        document.location.reload()
       }
     }
   }
+}
+function pokemonNames(props,pokemons,names){
   return <div css={pokemonNamesCard}>
-    <Button onClick={()=>handleRelease()} css={releaseStyle} variant="outline-info"><span>{names}</span></Button> 
+    <Button onClick={()=>{
+        handleRelease(pokemons,names)
+      }} css={releaseStyle} variant="outline-info"><span>{names}</span></Button> 
   </div>
 }
 
@@ -40,7 +44,7 @@ function PokemonCard(props){
         <p css={pokemon}>{props.pokemon}</p>
         <p css={owned}>owned: <span>{props.owned}</span></p>
         {disabled?
-        props.names.map((a)=>pokemonNames(props.pokemon,a)):null}
+        props.names.map((a)=>pokemonNames(props,props.pokemon,a)):null}
     </div>
 }
 

@@ -1,9 +1,43 @@
 /** @jsxImportSource @emotion/react */
 import { css, jsx } from '@emotion/react'
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Modal,Button, Form, Container } from "react-bootstrap";
 import {withRouter} from 'react-router-dom'
+import pokemon from '../pages/pokemon';
 
+function checkNameExist(pokemonName,myPokemonName){
+  var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
+  var data = []
+
+  if (!pokemonList){
+    return true
+  }
+  else{
+    // cek udah pernah ditambahin atau belum
+    // data.push(pokemonList)
+    console.log(pokemonList)
+    var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:null)
+    .filter((data)=>data!=null)
+    console.log(added)
+    //pernah ditambahin
+    if (added[0]){
+      var owned = added.map((pokemon)=>pokemon.owned)[0]
+      console.log(owned)
+      if (owned.includes(myPokemonName)){
+        // cek owned : pernah owned
+        return false
+      }
+      else {
+        // cek owned : blm pernah owned
+        return true
+      }
+    }
+    else{
+      //belum pernah ditambahin
+      return true
+    }
+  }
+}
 function saveData(pokemonName,myPokemonName,image){
   var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
   var data = []
@@ -16,27 +50,23 @@ function saveData(pokemonName,myPokemonName,image){
       "image":image,
       "owned":myPokemon
     }
-    data.push(JSON.stringify(pokemon))
-    localStorage.setItem('myPokemonItems',data)
+    data.push((pokemon))
+    localStorage.setItem('myPokemonItems',JSON.stringify(data))
+    console.log('add first time',data)
   }
   else{
     // cek udah pernah ditambahin atau belum
-    data.push(pokemonList)
-    var added = data.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:false)
+    var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:null).filter((data)=>data!=null)
     console.log(added)
     //pernah ditambahin
-    if (added){
+    if (added[0]){
       var owned = added.map((pokemon)=>pokemon.owned)[0]
       if (owned.includes(myPokemonName)){
-        // cek owned : pernah owned
-        return false
       }
       else {
-        // cek owned : blm pernah owned
         owned.push(myPokemonName)
         localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
-        console.log(pokemonList)
-        return true
+        console.log('pernah ditambahin',pokemonList)
       }
     }
     else{
@@ -48,16 +78,33 @@ function saveData(pokemonName,myPokemonName,image){
         "image":image,
         "owned":myPokemon
       }
-      data.push(JSON.stringify(pokemon))
-      localStorage.setItem('myPokemonItems',data)
+      pokemonList.push((pokemon))
+      console.log('blm pernah ditambahin')
+      localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
     }
   }
 }
 const CatchPokemon = (props) => {
     const [myPokemonName,setMyPokemonName] = useState("")
-    const [showErrorMessage,setErrorMessage] = useState(false)
-    var getPokemon = props.probability>=50?true:false;
+    const [errorMessage,setErrorMessage] = useState("")
+    const [formValid,setFormValid] = useState(false)
 
+    const handleChange = (e) => {
+      const value = e.target.value
+      setMyPokemonName(value)
+    }
+    useEffect(()=>{
+      let fieldValidationError = errorMessage;
+      let nameValid = formValid;
+      
+      nameValid = checkNameExist(props.name,myPokemonName)
+      fieldValidationError = nameValid? '':'Name already existed!';
+      setErrorMessage(fieldValidationError)
+      setFormValid(nameValid)
+
+    },[myPokemonName])
+
+    var getPokemon = props.probability>=5?true:false;
     return(
         <Modal
         {...props}
@@ -78,24 +125,24 @@ const CatchPokemon = (props) => {
                 <Form.Group controlId="formGroupPokemonName">
                     <Form.Label>Give your Pokemon a name</Form.Label>
                     <Form.Control type="text" placeholder="Pokemon name" 
-                    onChange = {e => setMyPokemonName(e.target.value)}/>
+                    onChange = {e => handleChange(e)}
+                    value={myPokemonName || ''}/>
                 </Form.Group>
             </Form>
             </Container>):
             (<p>The pokemon ran away... try again some other time</p>)
         }
-        {showErrorMessage?<p>Name already existed!</p>:null}
+        <p>{errorMessage}</p>
       </Modal.Body>
       <Modal.Footer>
         {getPokemon?
-        (<Button onClick= {()=>{
-          if (!saveData(props.name,myPokemonName,props.image)){
-            setErrorMessage(true)
-          }
-          else{
+        (<Button onClick= {()=> {
+          if (checkNameExist(props.name,myPokemonName)) {
+            saveData(props.name,myPokemonName,props.image)
             props.history.push(`/mylist`)
           }
-          }}>Save Name</Button>): (<Button onClick={props.onHide}>Okay</Button>)}
+        } }
+        disabled={!formValid}>Save Name</Button>): (<Button onClick={props.onHide}>Okay</Button>)}
       </Modal.Footer>
     </Modal>
     );

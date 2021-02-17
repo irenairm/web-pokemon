@@ -12,7 +12,7 @@ function Footer(props){
         setShow(false)
     };
     const handleShow = () => setShow(true);
-    var x = Math.ceil(Math.random()*100);
+    var x = Math.ceil(Math.random()*10);
 
     return (<>
             <div css={footer} onClick={()=> handleShow()}>

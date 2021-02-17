@@ -31,22 +31,23 @@ function PokemonList() {
     if (error) return <p>Error: {error.message}</p>;
 
     var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
-    var ownedPokemon= []
-    ownedPokemon.push(pokemonList)
-    
+    console.log(pokemonList)
+    // var pokemons = []
+    // pokemons.push(pokemonList)
+
     return (<Fragment>
       <Container>
       <Row>
           {
           data.pokemons.results.map((pokemon)=>{
+            var res = pokemonList!==null?(pokemonList.map((dt)=>dt.pokemon.localeCompare(pokemon.name)===0?dt.owned.length:null))
+            .filter((data)=>data!=null)[0]:null
+            // console.log((pokemonList.map((dt)=>dt)))
               return <Col xs={6} sm={3}>
                 <PokemonCard
                 img={pokemon.image} 
                 pokemon={pokemon.name} 
-                owned={
-                  ownedPokemon[0]!==null?
-                  (ownedPokemon.map((dt)=>dt.pokemon.localeCompare(pokemon.name)===0?dt.owned.length:0)):0
-                } />
+                owned={res?res:0} />
               </Col>
             })
           }
