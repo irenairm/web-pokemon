@@ -1,9 +1,8 @@
 // from https://www.apollographql.com/docs/tutorial/queries/
-import { ApolloClient, NormalizedCacheobject, ApolloProvider, gql } from "@apollo/client";
+import { ApolloClient, ApolloProvider, gql } from "@apollo/client";
 import { cache } from "./cache";
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter as Router} from 'react-router-dom'
 import Pages from "./pages";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
