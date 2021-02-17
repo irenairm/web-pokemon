@@ -3,6 +3,7 @@ import { ApolloClient, NormalizedCacheobject, ApolloProvider, gql } from "@apoll
 import { cache } from "./cache";
 import React from "react";
 import ReactDOM from "react-dom";
+import { BrowserRouter as Router} from 'react-router-dom'
 import Pages from "./pages";
 import 'bootstrap/dist/css/bootstrap.min.css';
 

@@ -14,15 +14,12 @@ function checkNameExist(pokemonName,myPokemonName){
   }
   else{
     // cek udah pernah ditambahin atau belum
-    // data.push(pokemonList)
-    console.log(pokemonList)
     var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:null)
     .filter((data)=>data!=null)
-    console.log(added)
+
     //pernah ditambahin
     if (added[0]){
       var owned = added.map((pokemon)=>pokemon.owned)[0]
-      console.log(owned)
       if (owned.includes(myPokemonName)){
         // cek owned : pernah owned
         return false
@@ -32,8 +29,8 @@ function checkNameExist(pokemonName,myPokemonName){
         return true
       }
     }
+    //belum pernah ditambahin
     else{
-      //belum pernah ditambahin
       return true
     }
   }
@@ -52,12 +49,10 @@ function saveData(pokemonName,myPokemonName,image){
     }
     data.push((pokemon))
     localStorage.setItem('myPokemonItems',JSON.stringify(data))
-    console.log('add first time',data)
   }
   else{
     // cek udah pernah ditambahin atau belum
     var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemonName)===0?pokemon:null).filter((data)=>data!=null)
-    console.log(added)
     //pernah ditambahin
     if (added[0]){
       var owned = added.map((pokemon)=>pokemon.owned)[0]
@@ -66,7 +61,6 @@ function saveData(pokemonName,myPokemonName,image){
       else {
         owned.push(myPokemonName)
         localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
-        console.log('pernah ditambahin',pokemonList)
       }
     }
     else{
@@ -79,12 +73,11 @@ function saveData(pokemonName,myPokemonName,image){
         "owned":myPokemon
       }
       pokemonList.push((pokemon))
-      console.log('blm pernah ditambahin')
       localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
     }
   }
 }
-const CatchPokemon = (props) => {
+export const CatchPokemon = (props) => {
     const [myPokemonName,setMyPokemonName] = useState("")
     const [errorMessage,setErrorMessage] = useState("")
     const [formValid,setFormValid] = useState(false)

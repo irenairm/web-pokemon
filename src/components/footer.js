@@ -6,7 +6,7 @@ import ball from '../assets/ball.png'
 import ModalProp from './modal'
 
 
-function Footer(props){
+export function Footer(props){
     const [show, setShow] = useState(false);
     const handleClose = () => {
         setShow(false)

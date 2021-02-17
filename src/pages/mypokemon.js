@@ -12,9 +12,8 @@ function noAvailablePokemon(props){
             <Button onClick={()=>props.history.push('/')}>Try Catch Pokemon Now</Button>
         </Container>
 }
-function MyPokemonList(props){
+export function MyPokemonList(props){
     var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
-    console.log(pokemonList)
 
     if (pokemonList===null||pokemonList.length===0) return noAvailablePokemon(props)
     else {

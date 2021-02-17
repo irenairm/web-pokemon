@@ -8,8 +8,7 @@ const handleRelease = (pokemons,names) => {
 
   if (pokemonList){
     var added = pokemonList.map((pokemon) => pokemon.pokemon.localeCompare(pokemons)===0?pokemon:false) .filter((data)=>data!=false)
-    console.log(added)
-    //pernah ditambahin
+
     if (added){
       var owned = added.map((pokemon)=>pokemon.owned)[0]
       if (owned.includes(names)){
@@ -20,7 +19,6 @@ const handleRelease = (pokemons,names) => {
           var pokemonIndex = pokemonList.indexOf(added[0])
           pokemonList.splice(pokemonIndex,1);
         }
-        console.log(pokemonList)
         localStorage.setItem('myPokemonItems',JSON.stringify(pokemonList))
         document.location.reload()
       }
@@ -35,7 +33,7 @@ function pokemonNames(props,pokemons,names){
   </div>
 }
 
-function PokemonCard(props){
+export function PokemonCard(props){
   const disabled = props.disabled
   const handleClick = () => {props.history.push(`/pokemon/${props.pokemon}`)}
     return <div onClick={disabled?null:()=>handleClick()}

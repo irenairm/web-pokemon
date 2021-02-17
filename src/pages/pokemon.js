@@ -28,7 +28,7 @@ query pokemon($name: String!) {
   }
 `;
 
-const Pokemon = (props) => {
+export const Pokemon = (props) => {
     let name = props.match.params.pokemonName;
     const {data,loading,error} = useQuery(GET_POKEMON, {variables: {name}});
     if (loading) return <Loading />;

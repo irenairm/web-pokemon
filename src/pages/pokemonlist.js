@@ -24,16 +24,13 @@ query pokemons($limit: Int, $offset: Int) {
     }
 }`;
 
-function PokemonList() {
+export function PokemonList() {
     const {data,loading,error,fetchMore} = useQuery(GET_POKEMON_LIST);
     const [isLoadingMore, setIsLoadingMore] = useState(false)
     if (loading) return <Loading />;
     if (error) return <p>Error: {error.message}</p>;
 
     var pokemonList = JSON.parse(localStorage.getItem('myPokemonItems'))
-    console.log(pokemonList)
-    // var pokemons = []
-    // pokemons.push(pokemonList)
 
     return (<Fragment>
       <Container>
@@ -42,7 +39,6 @@ function PokemonList() {
           data.pokemons.results.map((pokemon)=>{
             var res = pokemonList!==null?(pokemonList.map((dt)=>dt.pokemon.localeCompare(pokemon.name)===0?dt.owned.length:null))
             .filter((data)=>data!=null)[0]:null
-            // console.log((pokemonList.map((dt)=>dt)))
               return <Col xs={6} sm={3}>
                 <PokemonCard
                 img={pokemon.image} 
